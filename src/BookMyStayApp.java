@@ -1,3 +1,6 @@
+import java.util.HashMap;
+
+// Room Class (same as before)
 abstract class Room {
     String type;
     int beds;
@@ -34,6 +37,40 @@ class SuiteRoom extends Room {
     }
 }
 
+// 🔥 NEW CLASS (IMPORTANT)
+class RoomInventory {
+    private HashMap<String, Integer> inventory;
+
+    // Constructor
+    RoomInventory() {
+        inventory = new HashMap<>();
+
+        // Initialize availability
+        inventory.put("Single Room", 5);
+        inventory.put("Double Room", 3);
+        inventory.put("Suite Room", 2);
+    }
+
+    // Get availability
+    public int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
+    }
+
+    // Update availability
+    public void updateAvailability(String roomType, int count) {
+        inventory.put(roomType, count);
+    }
+
+    // Display inventory
+    public void displayInventory() {
+        System.out.println("=== Room Inventory ===");
+        for (String key : inventory.keySet()) {
+            System.out.println(key + " Available: " + inventory.get(key));
+        }
+    }
+}
+
+// MAIN CLASS
 public class BookMyStayApp {
     public static void main(String[] args) {
 
@@ -41,19 +78,20 @@ public class BookMyStayApp {
         Room doub = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        RoomInventory inventory = new RoomInventory();
 
         System.out.println("=== Room Details ===");
 
         single.display();
-        System.out.println("Available: " + singleAvailable);
+        System.out.println("Available: " + inventory.getAvailability("Single Room"));
 
         doub.display();
-        System.out.println("Available: " + doubleAvailable);
+        System.out.println("Available: " + inventory.getAvailability("Double Room"));
 
         suite.display();
-        System.out.println("Available: " + suiteAvailable);
+        System.out.println("Available: " + inventory.getAvailability("Suite Room"));
+
+        // Show full inventory
+        inventory.displayInventory();
     }
 }
